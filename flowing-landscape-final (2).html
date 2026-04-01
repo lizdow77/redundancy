@@ -1,0 +1,356 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+.inf{width:100%;aspect-ratio:1.414/1;background:#FAF6F2;border-radius:12px;overflow:hidden;font-family:'Inter',sans-serif;display:flex;flex-direction:column;position:relative}
+.inf::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(180,140,130,0.08) 0%,rgba(160,140,180,0.06) 35%,rgba(140,180,160,0.05) 65%,rgba(190,180,130,0.06) 100%);pointer-events:none;z-index:0}
+.hdr{text-align:center;padding:2% 6% 0.5%;position:relative;z-index:2;flex-shrink:0}
+.hdr h1{font-family:'Cormorant Garamond',serif;font-size:clamp(16px,2.8vw,34px);font-weight:500;color:#3A2A30;letter-spacing:-0.02em}
+.hdr .rule{display:block;width:60px;height:1px;background:linear-gradient(90deg,transparent,#C8A8A0,transparent);margin:0.5em auto}
+.hdr p{font-size:clamp(6px,0.85vw,10px);color:#8A7A7A;line-height:1.6;max-width:52%;margin:0 auto;font-weight:300}
+.phases-row{display:grid;grid-template-columns:2fr 2fr 2fr 1fr;gap:0;padding:0.3% 1% 0;position:relative;z-index:2;flex-shrink:0}
+.ph-label{text-align:center;padding:clamp(2px,0.3vw,5px) 0}
+.ph-label span{font-size:clamp(5px,0.6vw,8px);font-weight:500;letter-spacing:0.1em;text-transform:uppercase}
+.pl1 span{color:#8E5040}.pl2 span{color:#6B5280}.pl3 span{color:#4A7A62}.pl4 span{color:#8A7030}
+.ph-label .pname{display:block;font-family:'Cormorant Garamond',serif;font-size:clamp(8px,1.1vw,15px);font-weight:500;margin-top:1px}
+.pl1 .pname{color:#5E3030}.pl2 .pname{color:#3E2850}.pl3 .pname{color:#2E4A3A}.pl4 .pname{color:#5E4810}
+.scene-wrap{flex:1;position:relative;z-index:1}
+.scene-wrap svg{display:block;width:100%;height:100%}
+.fig{cursor:pointer}
+@keyframes shake{0%,100%{transform:translate(0,0)}10%{transform:translate(-3px,-1px)}20%{transform:translate(3px,1px)}30%{transform:translate(-2px,1px)}40%{transform:translate(2px,-1px)}50%{transform:translate(-1px,0)}60%{transform:translate(1px,0)}}
+@keyframes rage{0%,100%{opacity:1}25%{opacity:0.7}50%{opacity:1}75%{opacity:0.8}}
+@keyframes pulse{0%,100%{transform:scale(1)}30%{transform:scale(1.08)}60%{transform:scale(0.96)}}
+@keyframes sway{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-2deg)}75%{transform:rotate(2deg)}}
+@keyframes sink{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+@keyframes sparkle{0%,100%{opacity:0.12}50%{opacity:0.35}}
+@keyframes throb{0%,100%{transform:scale(1)}15%{transform:scale(1.18)}30%{transform:scale(1)}45%{transform:scale(1.12)}60%{transform:scale(1)}}
+.fig.anim-shock{animation:shake 0.6s ease-in-out 3}
+.fig.anim-anger .rage-head{animation:rage 0.3s ease-in-out 6}
+.fig.anim-search{animation:sway 0.8s ease-in-out 3}
+.fig.anim-dip{animation:sink 1.2s ease-in-out 2}
+.fig.anim-settle{animation:breathe 1.5s ease-in-out 2}
+.fig.anim-curiosity .sparkle-star{animation:sparkle 0.5s ease-in-out 5}
+.fig.anim-forward .heart-shape{animation:throb 1s ease-in-out 3}
+.card-overlay{position:absolute;z-index:10;pointer-events:none;opacity:0;transition:opacity 0.35s ease,transform 0.35s ease;transform:translateY(8px)}
+.card-overlay.active{opacity:1;pointer-events:auto;transform:translateY(0)}
+.card-inner{border-radius:clamp(8px,1vw,14px);padding:clamp(12px,1.6vw,24px);max-width:clamp(220px,30vw,380px);position:relative}
+.card-inner .close-btn{position:absolute;top:clamp(4px,0.5vw,8px);right:clamp(4px,0.5vw,8px);width:clamp(14px,1.6vw,22px);height:clamp(14px,1.6vw,22px);border-radius:50%;border:none;background:rgba(0,0,0,0.06);color:#8A7A7A;font-size:clamp(8px,1vw,13px);cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;font-family:'Inter',sans-serif}
+.c1{background:rgba(248,232,226,0.95);border:1px solid rgba(142,80,64,0.12)}
+.c2{background:rgba(244,220,214,0.95);border:1px solid rgba(90,30,30,0.12)}
+.c3{background:rgba(238,228,244,0.95);border:1px solid rgba(110,72,144,0.12)}
+.c4{background:rgba(230,224,240,0.95);border:1px solid rgba(72,56,120,0.12)}
+.c5{background:rgba(228,240,232,0.95);border:1px solid rgba(74,120,96,0.12)}
+.c6{background:rgba(220,238,228,0.95);border:1px solid rgba(56,128,96,0.12)}
+.c7{background:rgba(244,238,216,0.95);border:1px solid rgba(136,120,56,0.12)}
+.card-inner h3{font-family:'Cormorant Garamond',serif;font-size:clamp(14px,1.8vw,22px);font-weight:600;color:#3A2A30;margin-bottom:4px}
+.card-inner .when{font-size:clamp(9px,0.9vw,12px);color:#A898A0;display:block;margin-bottom:clamp(4px,0.5vw,8px)}
+.card-inner .body{font-size:clamp(10px,1.1vw,14px);color:#5E4E54;line-height:1.6;font-weight:300}
+.card-inner .feels{margin-top:clamp(5px,0.5vw,8px);display:flex;flex-wrap:wrap;gap:clamp(3px,0.3vw,5px)}
+.card-inner .feels span{font-size:clamp(8px,0.8vw,11px);padding:clamp(2px,0.25vw,4px) clamp(6px,0.6vw,10px);border-radius:20px}
+.c1 .feels span{background:rgba(200,140,130,0.25);color:#8E5040}
+.c2 .feels span{background:rgba(180,110,100,0.25);color:#7E3A3A}
+.c3 .feels span{background:rgba(180,140,200,0.25);color:#6B5280}
+.c4 .feels span{background:rgba(130,120,170,0.22);color:#4E4470}
+.c5 .feels span{background:rgba(140,190,160,0.25);color:#3A6A52}
+.c6 .feels span{background:rgba(100,170,130,0.22);color:#2A5A42}
+.c7 .feels span{background:rgba(200,180,100,0.25);color:#6A5410}
+.card-inner .gentle{margin-top:clamp(5px,0.5vw,8px);font-size:clamp(9px,0.95vw,13px);line-height:1.5;padding:clamp(6px,0.7vw,10px);border-radius:clamp(4px,0.5vw,8px);font-style:italic;font-weight:300}
+.c1 .gentle{background:rgba(248,238,232,0.7);color:#9E6B5A}
+.c2 .gentle{background:rgba(244,230,228,0.7);color:#8E4A4A}
+.c3 .gentle{background:rgba(240,232,248,0.7);color:#7B6290}
+.c4 .gentle{background:rgba(236,230,248,0.7);color:#5E5480}
+.c5 .gentle{background:rgba(234,246,238,0.7);color:#4A7A62}
+.c6 .gentle{background:rgba(228,244,234,0.7);color:#3A6A52}
+.c7 .gentle{background:rgba(248,242,224,0.7);color:#7A6420}
+.tap-hint{position:absolute;bottom:clamp(4px,0.8vw,12px);left:50%;transform:translateX(-50%);font-size:clamp(5px,0.6vw,8px);color:#A898A0;font-weight:300;opacity:0.7;z-index:2}
+.ftr{text-align:center;padding:1.2% 6% 2%;position:relative;z-index:2;flex-shrink:0;background:rgba(250,246,242,0.6)}
+.ftr .rule2{display:block;width:100%;height:1px;background:linear-gradient(90deg,transparent 5%,#C8A8A0 20%,#B8A0C8 40%,#A0C8B0 60%,#C8C090 80%,transparent 95%);margin-bottom:clamp(6px,0.8vw,14px)}
+.ftr h4{font-family:'Cormorant Garamond',serif;font-size:clamp(16px,2vw,26px);font-weight:500;color:#3A2A30;margin-bottom:4px}
+.ftr p{font-size:clamp(10px,1.1vw,15px);color:#8A7A7A;line-height:1.6;max-width:55%;margin:0 auto;font-weight:300}
+.ftr .sign{display:inline-block;margin-top:clamp(4px,0.5vw,8px);font-family:'Cormorant Garamond',serif;font-size:clamp(11px,1.2vw,16px);font-style:italic;color:#9E6B5A}
+</style>
+<div class="inf">
+<div class="hdr">
+<h1>The Emotional Journey of Redundancy</h1>
+<span class="rule"></span>
+<p>If your role is at risk, everything you're feeling right now is valid. This isn't a checklist — it's a gentle map of what many people experience, so you know you're not walking this path alone.</p>
+</div>
+<div class="phases-row">
+<div class="ph-label pl1"><span>Phase 1</span><span class="pname">The immediate aftermath</span></div>
+<div class="ph-label pl2"><span>Phase 2</span><span class="pname">The difficult middle</span></div>
+<div class="ph-label pl3"><span>Phase 3</span><span class="pname">The turning point</span></div>
+<div class="ph-label pl4"><span>Phase 4</span><span class="pname">Moving forward</span></div>
+</div>
+<div class="scene-wrap" id="sceneWrap">
+<svg id="mainSvg" viewBox="0 0 1400 500" preserveAspectRatio="xMidYMid meet">
+<defs>
+<linearGradient id="skyg" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0%" stop-color="#C8A098" stop-opacity="0.12"/>
+<stop offset="20%" stop-color="#D0B8B0" stop-opacity="0.08"/>
+<stop offset="40%" stop-color="#C0B0D0" stop-opacity="0.06"/>
+<stop offset="60%" stop-color="#B0C8B8" stop-opacity="0.05"/>
+<stop offset="100%" stop-color="#C8C4A0" stop-opacity="0.08"/>
+</linearGradient>
+</defs>
+<rect width="1400" height="500" fill="url(#skyg)"/>
+<circle cx="80" cy="50" r="22" fill="#D0B8A8" opacity="0.08"/>
+<circle cx="80" cy="50" r="12" fill="#D8C0B0" opacity="0.1"/>
+<circle cx="1320" cy="40" r="34" fill="#E8DCA0" opacity="0.14"/>
+<circle cx="1320" cy="40" r="20" fill="#F0E4B0" opacity="0.22"/>
+<line x1="1320" y1="10" x2="1320" y2="18" stroke="#E0D898" stroke-width="0.8" opacity="0.16" stroke-linecap="round"/>
+<line x1="1346" y1="22" x2="1354" y2="16" stroke="#E0D898" stroke-width="0.8" opacity="0.12" stroke-linecap="round"/>
+<line x1="1294" y1="22" x2="1286" y2="16" stroke="#E0D898" stroke-width="0.8" opacity="0.12" stroke-linecap="round"/>
+<line x1="1358" y1="36" x2="1366" y2="32" stroke="#E0D898" stroke-width="0.6" opacity="0.08" stroke-linecap="round"/>
+<line x1="1282" y1="36" x2="1274" y2="32" stroke="#E0D898" stroke-width="0.6" opacity="0.08" stroke-linecap="round"/>
+<path d="M0 260 Q80 248,160 232 Q240 212,320 190 Q370 176,420 190 Q470 208,530 234 Q590 254,660 272 Q730 286,800 292 Q860 296,910 294 Q960 290,1010 278 Q1060 262,1110 242 Q1160 222,1210 208 Q1260 198,1320 190 Q1360 186,1400 182 L1400 500 L0 500Z" fill="#D8CEC4" opacity="0.3"/>
+<path d="M0 276 Q90 268,180 254 Q260 234,340 210 Q380 200,425 208 Q475 222,540 248 Q600 268,670 282 Q740 292,810 298 Q870 302,920 300 Q970 296,1020 286 Q1070 272,1120 254 Q1170 234,1220 220 Q1270 210,1330 202 Q1370 198,1400 196 L1400 500 L0 500Z" fill="#C8BEB4" opacity="0.28"/>
+<path d="M0 292 Q100 286,200 274 Q280 258,350 234 Q390 224,430 228 Q480 242,550 264 Q610 280,680 292 Q750 302,820 306 Q880 310,930 308 Q980 304,1030 296 Q1080 284,1130 268 Q1180 250,1230 236 Q1280 226,1340 218 Q1375 214,1400 212 L1400 500 L0 500Z" fill="#B8AEA4" opacity="0.2"/>
+
+<g class="fig" id="fig0" onclick="toggleCard(0)" data-anim="anim-shock">
+<circle cx="100" cy="222" r="16" fill="#6E3830" opacity="0.75"/>
+<path d="M100 238 C100 238,84 254,82 276 C80 292,90 300,100 300 C110 300,120 292,118 276 C116 254,100 238,100 238Z" fill="#7E4038" opacity="0.6"/>
+<path d="M82 244 C72 236,58 232,44 236" fill="none" stroke="#6E3830" stroke-width="3" opacity="0.5" stroke-linecap="round"/>
+<path d="M118 244 C128 236,142 232,156 236" fill="none" stroke="#6E3830" stroke-width="3" opacity="0.5" stroke-linecap="round"/>
+<circle cx="64" cy="208" r="9" fill="#7E4038" opacity="0.3"/>
+<circle cx="48" cy="196" r="7" fill="#7E4038" opacity="0.22"/>
+<circle cx="36" cy="184" r="5" fill="#7E4038" opacity="0.14"/>
+<circle cx="28" cy="174" r="3.5" fill="#7E4038" opacity="0.08"/>
+<circle cx="140" cy="204" r="8" fill="#7E4038" opacity="0.26"/>
+<circle cx="154" cy="192" r="6" fill="#7E4038" opacity="0.18"/>
+<circle cx="164" cy="182" r="4" fill="#7E4038" opacity="0.1"/>
+<text x="42" y="202" font-family="Cormorant Garamond,serif" font-size="22" font-weight="600" fill="#5E2820" opacity="0.4">?</text>
+<text x="148" y="198" font-family="Cormorant Garamond,serif" font-size="18" font-weight="600" fill="#5E2820" opacity="0.3">?</text>
+<text x="72" y="178" font-family="Cormorant Garamond,serif" font-size="14" font-weight="600" fill="#5E2820" opacity="0.2">?</text>
+<ellipse cx="100" cy="308" rx="40" ry="6" fill="#6E3830" opacity="0.08"/>
+<text x="100" y="330" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="16" font-weight="600" fill="#6E3830" opacity="0.5">Shock</text>
+</g>
+
+<g class="fig" id="fig1" onclick="toggleCard(1)" data-anim="anim-anger">
+<circle class="rage-head" cx="300" cy="186" r="17" fill="#5A1E1E" opacity="0.8"/>
+<path d="M300 203 C300 203,282 222,280 248 C278 266,288 274,300 274 C312 274,322 266,320 248 C318 222,300 203,300 203Z" fill="#6A2424" opacity="0.6"/>
+<line x1="276" y1="194" x2="242" y2="170" stroke="#4A1414" stroke-width="3.5" opacity="0.6" stroke-linecap="round"/>
+<line x1="324" y1="194" x2="358" y2="170" stroke="#4A1414" stroke-width="3.5" opacity="0.6" stroke-linecap="round"/>
+<line x1="272" y1="212" x2="238" y2="204" stroke="#5A1E1E" stroke-width="3" opacity="0.5" stroke-linecap="round"/>
+<line x1="328" y1="212" x2="362" y2="204" stroke="#5A1E1E" stroke-width="3" opacity="0.5" stroke-linecap="round"/>
+<line x1="268" y1="230" x2="240" y2="226" stroke="#5A1E1E" stroke-width="2.5" opacity="0.35" stroke-linecap="round"/>
+<line x1="332" y1="230" x2="360" y2="226" stroke="#5A1E1E" stroke-width="2.5" opacity="0.35" stroke-linecap="round"/>
+<line x1="266" y1="248" x2="244" y2="246" stroke="#6A2828" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<line x1="334" y1="248" x2="356" y2="246" stroke="#6A2828" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<ellipse cx="300" cy="146" rx="42" ry="16" fill="#4A1414" opacity="0.12"/>
+<ellipse cx="278" cy="140" rx="26" ry="14" fill="#4A1414" opacity="0.09"/>
+<ellipse cx="326" cy="138" rx="28" ry="14" fill="#4A1414" opacity="0.07"/>
+<polyline points="292,158 288,174 294,174 289,192" fill="none" stroke="#3A0C0C" stroke-width="2" opacity="0.35" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="312,162 309,176 314,176 310,190" fill="none" stroke="#3A0C0C" stroke-width="1.5" opacity="0.25" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="276,164 274,174 278,174 275,184" fill="none" stroke="#3A0C0C" stroke-width="1" opacity="0.15" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="300" cy="282" rx="42" ry="6" fill="#5A1E1E" opacity="0.08"/>
+<text x="300" y="304" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="16" font-weight="600" fill="#5A1E1E" opacity="0.5">Anger</text>
+</g>
+
+<g class="fig" id="fig2" onclick="toggleCard(2)" data-anim="anim-search">
+<circle cx="530" cy="226" r="15" fill="#6E4890" opacity="0.65"/>
+<path d="M530 241 C530 241,518 254,516 272 C514 286,522 292,530 292 C538 292,546 286,544 272 C542 254,530 241,530 241Z" fill="#7E5898" opacity="0.5"/>
+<path d="M546 248 C558 238,574 232,594 226" fill="none" stroke="#6E4890" stroke-width="2.5" opacity="0.4" stroke-linecap="round"/>
+<path d="M544 256 C554 250,564 246,574 244" fill="none" stroke="#6E4890" stroke-width="1.5" opacity="0.25" stroke-linecap="round"/>
+<rect x="600" y="208" width="26" height="42" rx="6" fill="#C8B8D8" opacity="0.1" stroke="#6E4890" stroke-width="1.5" style="stroke-opacity:0.3"/>
+<circle cx="620" cy="230" r="2.5" fill="#6E4890" opacity="0.35"/>
+<rect x="600" y="212" width="18" height="4" rx="2" fill="#C8A840" opacity="0.3"/>
+<rect x="636" y="216" width="22" height="36" rx="5" fill="#D0C0E0" opacity="0.06" stroke="#7E5898" stroke-width="1" style="stroke-opacity:0.2"/>
+<path d="M458 204 L458 240 L488 240" fill="none" stroke="#8070A0" stroke-width="1.2" opacity="0.14"/>
+<path d="M470 188 L470 224 L442 224" fill="none" stroke="#8878A8" stroke-width="1.2" opacity="0.1"/>
+<path d="M440 208 L468 208 L468 236" fill="none" stroke="#8070A0" stroke-width="1" opacity="0.08"/>
+<ellipse cx="540" cy="300" rx="38" ry="5" fill="#6E4890" opacity="0.06"/>
+<text x="540" y="322" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="16" font-weight="600" fill="#6E4890" opacity="0.5">Searching</text>
+</g>
+
+<g class="fig" id="fig3" onclick="toggleCard(3)" data-anim="anim-dip">
+<path d="M660 290 Q710 302,760 308 Q800 310,840 306 Q880 296,930 278" fill="none" stroke="#584880" stroke-width="3" opacity="0.16" stroke-linecap="round"/>
+<path d="M670 282 Q720 296,765 302 Q810 304,850 298 Q890 290,940 270" fill="none" stroke="#584880" stroke-width="2" opacity="0.1" stroke-linecap="round"/>
+<circle cx="765" cy="286" r="14" fill="#483878" opacity="0.65"/>
+<path d="M765 300 C765 300,755 312,755 324 C755 332,758 334,765 334 C772 334,775 332,775 324 C775 312,765 300,765 300Z" fill="#584888" opacity="0.5"/>
+<path d="M751 306 C743 302,733 302,725 306" fill="none" stroke="#483878" stroke-width="2" opacity="0.3" stroke-linecap="round"/>
+<path d="M779 306 C787 302,797 302,805 306" fill="none" stroke="#483878" stroke-width="2" opacity="0.3" stroke-linecap="round"/>
+<line x1="780" y1="322" x2="794" y2="306" stroke="#584880" stroke-width="0.8" opacity="0.12" stroke-linecap="round" stroke-dasharray="2 4"/>
+<line x1="796" y1="304" x2="812" y2="286" stroke="#584880" stroke-width="0.7" opacity="0.08" stroke-linecap="round" stroke-dasharray="2 4"/>
+<line x1="814" y1="284" x2="832" y2="264" stroke="#584880" stroke-width="0.6" opacity="0.05" stroke-linecap="round" stroke-dasharray="2 4"/>
+<ellipse cx="765" cy="342" rx="40" ry="5" fill="#483878" opacity="0.06"/>
+<text x="765" y="364" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="16" font-weight="600" fill="#483878" opacity="0.5">The dip</text>
+</g>
+
+<g class="fig" id="fig4" onclick="toggleCard(4)" data-anim="anim-settle">
+<circle cx="1010" cy="224" r="16" fill="#4A7860" opacity="0.6"/>
+<path d="M1010 240 C1010 240,996 256,996 272 C996 282,1002 286,1010 286 C1018 286,1024 282,1024 272 C1024 256,1010 240,1010 240Z" fill="#5A8870" opacity="0.48"/>
+<circle cx="1010" cy="206" r="46" fill="#D8CC80" opacity="0.08"/>
+<circle cx="1046" cy="180" r="30" fill="#D8CC80" opacity="0.12"/>
+<circle cx="1046" cy="180" r="18" fill="#E8DCA0" opacity="0.2"/>
+<line x1="1046" y1="154" x2="1046" y2="142" stroke="#C8C080" stroke-width="1.2" opacity="0.18" stroke-linecap="round"/>
+<line x1="1068" y1="162" x2="1078" y2="152" stroke="#C8C080" stroke-width="1.2" opacity="0.15" stroke-linecap="round"/>
+<line x1="1024" y1="162" x2="1014" y2="152" stroke="#C8C080" stroke-width="1.2" opacity="0.15" stroke-linecap="round"/>
+<path d="M1028 232 Q1052 224,1076 232" fill="none" stroke="#5A8870" stroke-width="1.2" opacity="0.2" stroke-linecap="round"/>
+<path d="M1026 244 Q1058 234,1090 244" fill="none" stroke="#5A8870" stroke-width="0.8" opacity="0.12" stroke-linecap="round"/>
+<ellipse cx="1010" cy="294" rx="38" ry="5" fill="#4A7860" opacity="0.06"/>
+<text x="1010" y="316" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="16" font-weight="600" fill="#4A7860" opacity="0.5">Settling</text>
+</g>
+
+<g class="fig" id="fig5" onclick="toggleCard(5)" data-anim="anim-curiosity">
+<circle cx="1160" cy="202" r="15" fill="#388060" opacity="0.6"/>
+<path d="M1160 217 C1160 217,1148 230,1148 244 C1148 252,1152 256,1160 256 C1168 256,1172 252,1172 244 C1172 230,1160 217,1160 217Z" fill="#48906E" opacity="0.48"/>
+<ellipse cx="1180" cy="200" rx="10" ry="5" fill="#388060" opacity="0.15" transform="rotate(-10 1180 200)"/>
+<circle cx="1206" cy="176" r="10" fill="#388060" opacity="0.18"/>
+<circle cx="1234" cy="194" r="8" fill="#48906E" opacity="0.14"/>
+<circle cx="1218" cy="220" r="7" fill="#388060" opacity="0.1"/>
+<circle cx="1248" cy="172" r="6" fill="#58A880" opacity="0.1"/>
+<circle cx="1256" cy="208" r="5" fill="#48906E" opacity="0.08"/>
+<line x1="1206" y1="186" x2="1218" y2="213" stroke="#388060" stroke-width="1" opacity="0.14"/>
+<line x1="1214" y1="176" x2="1228" y2="188" stroke="#388060" stroke-width="1" opacity="0.14"/>
+<line x1="1234" y1="202" x2="1224" y2="218" stroke="#388060" stroke-width="0.8" opacity="0.1"/>
+<line x1="1242" y1="194" x2="1252" y2="172" stroke="#388060" stroke-width="0.7" opacity="0.08"/>
+<path class="sparkle-star" d="M1196 156 L1198 148 L1200 156 L1208 158 L1200 160 L1202 168 L1198 162 L1194 168 L1196 160 L1188 158Z" fill="#388060" opacity="0.18"/>
+<path class="sparkle-star" d="M1262 226 L1264 220 L1266 226 L1272 228 L1266 230 L1268 236 L1264 232 L1260 236 L1262 230 L1256 228Z" fill="#48906E" opacity="0.12"/>
+<path class="sparkle-star" d="M1240 154 L1241 150 L1242 154 L1246 155 L1242 156 L1243 160 L1241 157 L1239 160 L1240 156 L1236 155Z" fill="#58A880" opacity="0.1"/>
+<ellipse cx="1160" cy="264" rx="36" ry="5" fill="#388060" opacity="0.06"/>
+<text x="1160" y="286" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="16" font-weight="600" fill="#388060" opacity="0.5">Curiosity</text>
+</g>
+
+<g class="fig" id="fig6" onclick="toggleCard(6)" data-anim="anim-forward">
+<path class="heart-shape" d="M1320 178 C1314 168,1300 164,1300 178 C1300 190,1320 206,1320 206 C1320 206,1340 190,1340 178 C1340 164,1326 168,1320 178Z" fill="#887838" opacity="0.62"/>
+<path d="M1320 206 C1320 206,1306 222,1306 238 C1306 248,1312 252,1320 252 C1328 252,1334 248,1334 238 C1334 222,1320 206,1320 206Z" fill="#988840" opacity="0.48"/>
+<line x1="1320" y1="252" x2="1332" y2="270" stroke="#887838" stroke-width="2" opacity="0.28" stroke-linecap="round"/>
+<line x1="1320" y1="252" x2="1310" y2="270" stroke="#887838" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<circle cx="1320" cy="224" r="44" fill="#C8C070" opacity="0.05"/>
+<path d="M1354 194 C1354 194,1352 176,1358 164" fill="none" stroke="#608040" stroke-width="1.5" opacity="0.25" stroke-linecap="round"/>
+<ellipse cx="1360" cy="162" rx="8" ry="4.5" fill="#608040" opacity="0.18" transform="rotate(-20 1360 162)"/>
+<ellipse cx="1352" cy="174" rx="6" ry="3.5" fill="#608040" opacity="0.12" transform="rotate(20 1352 174)"/>
+<path d="M1362 194 C1362 194,1364 182,1360 172" fill="none" stroke="#608040" stroke-width="1" opacity="0.15" stroke-linecap="round"/>
+<ellipse cx="1358" cy="170" rx="5" ry="3" fill="#608040" opacity="0.1" transform="rotate(-30 1358 170)"/>
+<rect x="1368" y="208" width="18" height="14" rx="3" fill="none" stroke="#988840" stroke-width="1.2" opacity="0.22"/>
+<line x1="1368" y1="213" x2="1386" y2="213" stroke="#988840" stroke-width="0.8" opacity="0.16"/>
+<path d="M1392 180 L1394 172 L1396 180 L1404 182 L1396 184 L1398 192 L1394 186 L1390 192 L1392 184 L1384 182Z" fill="#988840" opacity="0.22"/>
+<ellipse cx="1320" cy="278" rx="42" ry="6" fill="#887838" opacity="0.06"/>
+<text x="1320" y="300" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="16" font-weight="600" fill="#887838" opacity="0.5">Moving forward</text>
+</g>
+
+<path d="M114 300 Q160 290,220 258 Q260 238,292 216" fill="none" stroke="#8E5A50" stroke-width="0.6" opacity="0.08" stroke-linecap="round" stroke-dasharray="2 6"/>
+<path d="M314 268 Q380 280,450 290 Q500 296,524 288" fill="none" stroke="#8E6868" stroke-width="0.5" opacity="0.06" stroke-linecap="round" stroke-dasharray="2 6"/>
+<path d="M542 286 Q590 296,660 304 Q720 308,758 304" fill="none" stroke="#8878A8" stroke-width="0.5" opacity="0.05" stroke-linecap="round" stroke-dasharray="2 6"/>
+<path d="M778 328 Q840 308,920 282 Q970 262,1002 246" fill="none" stroke="#7880A0" stroke-width="0.5" opacity="0.06" stroke-linecap="round" stroke-dasharray="2 6"/>
+<path d="M1022 278 Q1060 262,1110 242 Q1140 230,1154 224" fill="none" stroke="#68A088" stroke-width="0.5" opacity="0.05" stroke-linecap="round" stroke-dasharray="2 6"/>
+<path d="M1170 250 Q1220 230,1270 214 Q1300 206,1314 200" fill="none" stroke="#90A070" stroke-width="0.5" opacity="0.05" stroke-linecap="round" stroke-dasharray="2 6"/>
+</svg>
+
+<div class="card-overlay" id="card0" style="left:1%;top:8%">
+<div class="card-inner c1">
+<button class="close-btn" onclick="closeCard(0)">x</button>
+<h3>Shock and disbelief</h3>
+<span class="when">Often the first days</span>
+<div class="body">Even if part of you saw it coming, hearing the words can feel unreal. Your mind might go quiet, or race in circles. Some people carry on as normal — not because they're avoiding it, but because the brain needs time to catch up. That's okay.</div>
+<div class="feels"><span>Numbness</span><span>Disbelief</span><span>Going through the motions</span></div>
+<div class="gentle">It's completely natural to need time before you can take this in. There's no rush.</div>
+</div>
+</div>
+<div class="card-overlay" id="card1" style="left:14%;top:8%">
+<div class="card-inner c2">
+<button class="close-btn" onclick="closeCard(1)">x</button>
+<h3>Frustration and anger</h3>
+<span class="when">Days to weeks</span>
+<div class="body">When the news starts to land, it's common to feel a wave of frustration — at the company, at leadership, at the unfairness of it. You might feel irritable in surprising ways. This isn't a flaw. It's your mind processing something that matters deeply to you.</div>
+<div class="feels"><span>Resentment</span><span>Irritability</span><span>Sense of injustice</span></div>
+<div class="gentle">Anger is a sign you cared about your work. Let yourself feel it without judgement.</div>
+</div>
+</div>
+<div class="card-overlay" id="card2" style="left:30%;top:8%">
+<div class="card-inner c3">
+<button class="close-btn" onclick="closeCard(2)">x</button>
+<h3>Searching for a way through</h3>
+<span class="when">Overlaps with other stages</span>
+<div class="body">You might find yourself looking for ways to change the outcome — working harder, rehearsing conversations, volunteering for more. There can be a restless energy here. It's your mind looking for a door that might still be open.</div>
+<div class="feels"><span>"What if" thinking</span><span>Restless energy</span><span>Hope mixed with anxiety</span></div>
+<div class="gentle">Wanting to fight for yourself is a strength — even when the outcome isn't in your hands.</div>
+</div>
+</div>
+<div class="card-overlay" id="card3" style="left:44%;top:8%">
+<div class="card-inner c4">
+<button class="close-btn" onclick="closeCard(3)">x</button>
+<h3>The dip</h3>
+<span class="when">Often the hardest stretch</span>
+<div class="body">This is where many people feel it most. Confidence can take a real knock. You might question your abilities, struggle to sleep, or find it hard to picture what comes next. Please be gentle with yourself here.</div>
+<div class="feels"><span>Self-doubt</span><span>Low energy</span><span>Withdrawal</span><span>Disrupted sleep</span></div>
+<div class="gentle">This is not a reflection of your worth. It's the weight of uncertainty, and it does lift.</div>
+</div>
+</div>
+<div class="card-overlay" id="card4" style="left:62%;top:8%">
+<div class="card-inner c5">
+<button class="close-btn" onclick="closeCard(4)">x</button>
+<h3>A quiet settling</h3>
+<span class="when">Gradual, not sudden</span>
+<div class="body">Acceptance doesn't arrive with fanfare. It's more like waking up one morning and noticing the fog has thinned. You're not happy about the situation, but you're no longer fighting it either. That shift is real progress.</div>
+<div class="feels"><span>Clarity returning</span><span>Less resistance</span><span>Calmer thinking</span></div>
+<div class="gentle">You don't have to feel positive yet. Just feeling steadier is enough.</div>
+</div>
+</div>
+<div class="card-overlay" id="card5" style="left:74%;top:8%">
+<div class="card-inner c6">
+<button class="close-btn" onclick="closeCard(5)">x</button>
+<h3>Curiosity returns</h3>
+<span class="when">A welcome shift</span>
+<div class="body">Something changes in the questions you ask yourself. Instead of "why me?" you start wondering "what if?" You might reconnect with old contacts, browse roles you'd never considered, or remember interests you'd set aside.</div>
+<div class="feels"><span>Openness</span><span>Reconnecting</span><span>Glimmers of excitement</span></div>
+<div class="gentle">You're not starting from scratch. You're starting from experience.</div>
+</div>
+</div>
+<div class="card-overlay" id="card6" style="left:85%;top:8%">
+<div class="card-inner c7">
+<button class="close-btn" onclick="closeCard(6)">x</button>
+<h3>Taking steps, however gently</h3>
+<span class="when">In your own time</span>
+<div class="body">This isn't about having it all figured out. It's about small, real movements — updating your CV, having a conversation, applying for something, or choosing a completely different path. Many people eventually look back and say this was a turning point. But right now, all that matters is that you're moving.</div>
+<div class="feels"><span>Purpose</span><span>Momentum</span><span>Self-trust rebuilding</span><span>New possibilities</span></div>
+<div class="gentle">You've already come through the hardest part. Trust yourself to find what's next.</div>
+</div>
+</div>
+<span class="tap-hint">Click each figure to explore their story</span>
+</div>
+<div class="ftr">
+<span class="rule2"></span>
+<h4>This journey isn't a straight line</h4>
+<p>You might feel acceptance on Monday and anger again on Wednesday. You might skip stages or revisit them. None of that means you're doing it wrong — it means you're human.</p>
+<span class="sign">Give yourself the same kindness you'd offer a friend</span>
+</div>
+</div>
+<script>
+var activeCard = -1;
+function toggleCard(i) {
+  if (activeCard === i) { closeCard(i); return; }
+  if (activeCard >= 0) closeCard(activeCard);
+  var card = document.getElementById('card' + i);
+  var fig = document.getElementById('fig' + i);
+  var anim = fig.dataset.anim;
+  card.classList.add('active');
+  fig.classList.remove(anim);
+  void fig.offsetWidth;
+  fig.classList.add(anim);
+  if (i === 1) {
+    var head = fig.querySelector('.rage-head');
+    if (head) {
+      head.setAttribute('fill', '#8A1010');
+      head.setAttribute('opacity', '0.9');
+      setTimeout(function(){
+        head.setAttribute('fill', '#5A1E1E');
+        head.setAttribute('opacity', '0.8');
+      }, 1800);
+    }
+  }
+  activeCard = i;
+}
+function closeCard(i) {
+  var card = document.getElementById('card' + i);
+  var fig = document.getElementById('fig' + i);
+  card.classList.remove('active');
+  fig.classList.remove(fig.dataset.anim);
+  activeCard = -1;
+}
+document.addEventListener('click', function(e) {
+  if (activeCard >= 0 && !e.target.closest('.fig') && !e.target.closest('.card-overlay')) {
+    closeCard(activeCard);
+  }
+});
+</script>
